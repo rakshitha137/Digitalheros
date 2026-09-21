@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --navy-dark: #0b132b;
+    --navy-card: #141e3d;
+    --navy-border: #233159;
+    --sage-muted: #5a7d6c;
+    --sage-soft: #7e9f8e;
+    --mint-soft: #a8d5c5;
+    --mint-light: #d8f3dc;
+    --orange-accent: #d96b27;
+    --orange-hover: #e87a36;
+    --off-white: #f8faf9;
+    --sand-light: #f1f5f4;
+  }
+
+  body {
+    background-color: var(--navy-dark);
+    color: var(--off-white);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Design Utilities */
+.bg-navy-dark { background-color: #0b132b; }
+.bg-navy-card { background-color: #141e3d; }
+.bg-navy-light { background-color: #1c2a52; }
+.border-navy-light { border-color: #233159; }
+
+.bg-sand-light { background-color: #f1f5f4; }
+.bg-off-white { background-color: #f8faf9; }
+
+.text-sage-muted { color: #5a7d6c; }
+.text-sage-soft { color: #7e9f8e; }
+.bg-sage-muted { background-color: #5a7d6c; }
+.bg-sage-soft { background-color: #7e9f8e; }
+
+.text-mint-soft { color: #a8d5c5; }
+.text-mint-light { color: #d8f3dc; }
+.bg-mint-soft { background-color: #a8d5c5; }
+.bg-mint-light { background-color: #d8f3dc; }
+
+.text-orange-accent { color: #d96b27; }
+.bg-orange-accent { background-color: #d96b27; }
+.hover\:bg-orange-hover:hover { background-color: #e87a36; }
+
+/* Organic Glow & Glassmorphic Effects */
+.glass-panel {
+  background: rgba(20, 30, 61, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(90, 125, 108, 0.2);
+}
+
+.organic-shape-bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  pointer-events: none;
 }
