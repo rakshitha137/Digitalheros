@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DemoBanner from "@/components/DemoBanner";
+import { isDemoMode } from "@/lib/demo-mode";
 
 export const metadata: Metadata = {
   title: "Digital Heroes | Stableford Golf Score Monthly Draw & Charity Platform",
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen flex flex-col bg-[#0B132B] text-[#F8FAF9] antialiased selection:bg-[#D96B27] selection:text-[#F8FAF9]">
-        <DemoBanner />
+        {isDemoMode() && <DemoBanner />}
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
