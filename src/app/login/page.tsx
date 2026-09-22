@@ -2,15 +2,41 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
+import { getBrowserClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Phase 1 Preview Mode: Authentication logic will be connected to Supabase Auth in Phase 2.");
+    setError(null);
+
+    const supabase = getBrowserClient();
+    if (!supabase) {
+      setError("Backend is not configured yet. Please try again later.");
+      return;
+    }
+
+    setLoading(true);
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    setLoading(false);
+
+    if (signInError) {
+      setError(signInError.message);
+      return;
+    }
+
+    router.push("/dashboard");
+    router.refresh();
   };
 
   return (
@@ -23,13 +49,12 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Phase 1 Notice */}
-        <div className="bg-[#0B132B] p-4 rounded-xl border border-[#233159] text-xs text-[#A8D5C5] flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 text-[#D96B27] shrink-0 mt-0.5" />
-          <span>
-            <strong>Phase 1 Static Demo:</strong> Use any email &amp; password to test form interaction. Supabase Auth is integrated in Phase 2.
-          </span>
-        </div>
+        {error && (
+          <div className="bg-red-500/10 p-4 rounded-xl border border-red-500/30 text-xs text-red-300 flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
@@ -69,9 +94,10 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl text-sm font-bold bg-[#D96B27] text-[#F8FAF9] hover:bg-[#E87A36] transition-colors shadow-lg flex items-center justify-center gap-2 mt-2"
+            disabled={loading}
+            className="w-full py-3.5 rounded-xl text-sm font-bold bg-[#D96B27] text-[#F8FAF9] hover:bg-[#E87A36] transition-colors shadow-lg flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
           >
-            Sign In <ArrowRight className="w-4 h-4" />
+            {loading ? "Signing In..." : "Sign In"} <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
